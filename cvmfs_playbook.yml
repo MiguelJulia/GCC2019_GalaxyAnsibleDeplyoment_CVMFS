@@ -1,0 +1,10 @@
+- hosts: galaxyservers
+  become: true
+  roles:
+    - galaxyproject.cvmfs
+    - galaxyproject.galaxy
+  handlers:
+    - name: Restart Galaxy
+      supervisorctl:
+        name: galaxy
+        state: restarted 

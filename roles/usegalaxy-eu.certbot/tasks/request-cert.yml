@@ -1,0 +1,40 @@
+---
+- name: Create webroot directories
+  file:
+    path: "{{ certbot_well_known_root }}"
+    state: directory
+  when: certbot_auth_method == "--webroot"
+
+- name: Request certificate
+  command: >-
+      {{ certbot_script }}
+        certonly
+        {{ "--test-cert" if certbot_environment == "staging" else "" }}
+        --non-interactive
+        {% if certbot_dns_provider is defined %}
+            --dns-{{ certbot_dns_provider }}
+        {% else %}
+            {{ certbot_auth_method | default("--standalone") }}
+        {% endif %}
+        {% if certbot_admin_email is defined %}
+            -m {{ certbot_admin_email }}
+        {% else %}
+            --register-unsafely-without-email
+        {% endif %}
+        {{ certbot_agree_tos }}
+        {% if certbot_auth_method | default("--standalone") == "--webroot" %}
+            -w {{ certbot_well_known_root }}
+        {% endif %}
+        -d {{ ','.join(certbot_domains) }}
+        {{ "--expand" if certbot_expand else "" }}
+        {{ certbot_auto_renew_extra }}
+  register: request
+  args:
+    creates: "{{ '/__not_a_real_file' if certbot_force_run else '/etc/letsencrypt/renewal/' ~ (certbot_hostname_override | default(certbot_domains[0])) ~ '.conf' }}"
+  notify:
+    - Execute the certificate post-renewal script
+
+- name: Log output of certbot command
+  debug:
+    var: request
+  when: request is not skipped

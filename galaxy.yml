@@ -1,0 +1,32 @@
+---
+- hosts: galaxyservers
+  become: true 
+  vars:
+    slurm_roles: ['controller', 'exec']
+  pre_tasks:
+    - name: install psycopg2
+      package:
+        name: ['git', 'python-virtualenv', 'make','python-psycopg2']
+  handlers:
+    - name: Restart Galaxy
+      supervisorctl:
+        name: galaxy
+        state: restarted
+  roles:
+    - galaxyproject.postgresql
+    - role:  natefoo.postgresql_objects
+      become: true
+      become_user: postgres
+    - galaxyproject.galaxy
+    - uchida.miniconda
+    - geerlingguy.pip
+    - usegalaxy-eu.supervisor
+    - galaxyproject.nginx
+    - galaxyproject.repos
+    - galaxyproject.slurm
+
+  post_tasks:
+    - name: Install slurm-drmaa
+      package:
+        name: slurm-drmaa1
+

@@ -1,0 +1,27 @@
+---
+# Certbot auto-renew cron job configuration (for certificate renewals).
+certbot_auto_renew: true
+certbot_auto_renew_user: "{{ ansible_user }}"
+certbot_auto_renew_hour: 3
+certbot_auto_renew_minute: 30
+certbot_auto_renew_extra: ""
+
+# To install from source (on older OSes or if you need a specific or newer
+# version of Certbot), set this variable to `yes` and configure other options.
+certbot_install_method: virtualenv
+certbot_repo: https://github.com/certbot/certbot.git
+certbot_version: master
+certbot_keep_updated: yes
+# Automatically sets certbot_force_run
+certbot_expand: false
+
+# Where to put Certbot when installing from source or pip.
+certbot_dir: /opt/certbot
+
+certbot_environment: production
+
+certbot_share_key_users: []
+certbot_share_key_dir: /etc/ssl/user
+
+# Set to true to run `certbot certonly` even if its config already exists
+certbot_force_run: "{{ certbot_expand }}"
