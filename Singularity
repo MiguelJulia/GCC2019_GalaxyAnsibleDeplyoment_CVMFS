@@ -16,7 +16,7 @@ From: ubuntu:16.04
         ansible-playbook -i host cvmfs_playbook.yml
 
         echo "Set wellcome webpage"
-        cp static/welcome.html /srv/galaxy/server/static/welcome.html
+        cp files/galaxy/welcome.html /srv/galaxy/server/static/welcome.html
 
 %runscript
     exec scif "$@"
