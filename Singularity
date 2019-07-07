@@ -5,8 +5,10 @@ From: ubuntu:16.04
         ./* /opt/
 
 %post
+        apt-get update
+        
         echo "Install python2.7 setuptools and pip"
-        apt-get install ansible python2 python-pip
+        apt-get install -y ansible python python-pip
 
         echo "Install virtualenv"
         pip2 install virtualenv
