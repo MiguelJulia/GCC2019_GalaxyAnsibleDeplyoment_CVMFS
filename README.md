@@ -34,4 +34,12 @@ Frontpage is not created by default. You can find the template inside `galaxy_ro
 #### Deploying yoyr ansible-managed galaxy into a container
 We will use [ansible-bender](https://github.com/ansible-community/ansible-bender) for this task. Your playbook will have to be adapted to this plugging standars as described in their documentation, or compare the differences between my cvmfs_playbook.yml and ansible-bender-test.yml to have a quick idea of how it has to be done.
 
-Make sure you are running the right version of ansible, as ansible-bender only works with python3. Still, playbooks designed for python2 can still be used.
+Make sure you are running the right version of ansible, as ansible-bender only works with python3. Still, playbooks designed for python2 can still be used. You will also need to install [buildah](https://github.com/containers/buildah/blob/master/install.md) and [podman](https://github.com/containers/libpod/blob/master/install.md). 
+
+Finally, you will need to configurate podman repo config file `/etc/containers/registries.conf` to tell it where to look for your containers. For example, to search in dokerhub add `'docker.io'` inside 
+```
+[registries.search]
+registries = ['docker.io']
+```
+
+The image is required to have python interpreter build in.
