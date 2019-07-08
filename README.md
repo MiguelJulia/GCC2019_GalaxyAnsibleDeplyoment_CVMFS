@@ -30,3 +30,8 @@ galaxy_config:
 
 #### welcome.html
 Frontpage is not created by default. You can find the template inside `galaxy_root: /srv/galaxy`, in `server/static/welcome.html.sample`. Just create a `welcome.html` page from this template in that same location and restart galaxy.
+
+#### Deploying yoyr ansible-managed galaxy into a container
+We will use [ansible-bender](https://github.com/ansible-community/ansible-bender) for this task. Your playbook will have to be adapted to this plugging standars as described in their documentation, or compare the differences between my cvmfs_playbook.yml and ansible-bender-test.yml to have a quick idea of how it has to be done.
+
+Make sure you are running the right version of ansible, as ansible-bender only works with python3. Still, playbooks designed for python2 can still be used.
